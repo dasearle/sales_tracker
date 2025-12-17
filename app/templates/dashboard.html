@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sales Tracker{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p class="lead">Welcome, {{ user.email }}!</p>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Your Role</h5>
+                <p class="card-text">
+                    <span class="badge bg-primary fs-5">{{ user.role|capitalize }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Links</h5>
+                <div class="list-group list-group-flush">
+                    {% if user.role in ['sales', 'admin', 'management'] %}
+                    <a href="{{ url_for('main.sales') }}" class="list-group-item list-group-item-action">
+                        Sales Dashboard
+                    </a>
+                    {% endif %}
+                    {% if user.role in ['marketing', 'admin', 'management'] %}
+                    <a href="{{ url_for('main.marketing') }}" class="list-group-item list-group-item-action">
+                        Marketing Dashboard
+                    </a>
+                    {% endif %}
+                    {% if user.role in ['admin', 'management'] %}
+                    <a href="{{ url_for('main.reports') }}" class="list-group-item list-group-item-action">
+                        Reports
+                    </a>
+                    {% endif %}
+                    {% if user.role == 'admin' %}
+                    <a href="{{ url_for('admin.users') }}" class="list-group-item list-group-item-action">
+                        User Management
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

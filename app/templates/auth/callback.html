@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticating... - Sales Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container text-center py-5">
+        <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="lead">Completing sign in...</p>
+    </div>
+
+    <script>
+        // Extract tokens from URL hash fragment (Supabase returns tokens in the hash)
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+
+        if (accessToken) {
+            // Redirect with tokens as query params for server-side handling
+            const callbackUrl = `/auth/callback?access_token=${encodeURIComponent(accessToken)}&refresh_token=${encodeURIComponent(refreshToken || '')}`;
+            window.location.href = callbackUrl;
+        } else {
+            // Check query params as well (in case tokens are already there)
+            const queryParams = new URLSearchParams(window.location.search);
+            if (!queryParams.get('access_token')) {
+                // No token found, redirect to home
+                window.location.href = '/';
+            }
+        }
+    </script>
+</body>
+</html>
